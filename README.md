@@ -1,6 +1,7 @@
 # Galago
 
-TODO: Write a gem description
+Galago is an API micro framework for Ruby.
+I am building it to gain more appreciation for existing tools.
 
 ## Installation
 
@@ -18,7 +19,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+module Foo
+  class API
+    get '/bar', to: Bar::Index
+  end
+end
+
+run Foo::API
+```
 
 ## Contributing
 
@@ -27,3 +36,4 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
