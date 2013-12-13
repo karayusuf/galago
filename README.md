@@ -20,9 +20,11 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-module Foo
-  class API
-    get '/bar', to: Bar::Index
+module GitHub::API < Galagos::API
+  routes do
+    get '/' do
+      "Hello There!"
+    end
   end
 end
 
