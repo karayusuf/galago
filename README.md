@@ -20,7 +20,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-module GitHub::API < Galagos::API
+module GitHub::API < Galago::API
   routes do
     get '/' do
       "Hello There!"
