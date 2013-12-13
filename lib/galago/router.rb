@@ -1,38 +1,35 @@
 module Galago
   class Router
-
-    class HttpVerbInvalid < ArgumentError; end
-
     NotFound = [ 404, { 'Content-Type' => 'text/plain' }, ["Not Found"]]
 
     attr_reader :routes
 
     def initialize
       @routes = {
-        "GET"    => {},
-        "PATCH"  => {},
-        "POST"   => {},
-        "PUT"    => {},
-        "DELETE" => {}
+        "GET"    => [],
+        "PATCH"  => [],
+        "POST"   => [],
+        "PUT"    => [],
+        "DELETE" => []
       }
     end
 
-    def add_route(http_verb, path, application)
-      routes = routes_for_http_verb(http_verb)
-      routes[path] = application
+    def add_route(request_method, path, application)
+      endpoint = Route.new(request_method, path, application)
+      routes[endpoint.request_method] << endpoint
     end
 
     def has_route?(http_verb, path)
       routes = routes_for_http_verb(http_verb)
-      routes.has_key?(path)
+      routes.any? { |route| route.path == path }
     end
 
     def process_request(env)
       routes = routes_for_http_verb(env['REQUEST_METHOD'])
-      endpoint = routes.fetch(env['PATH_INFO'], nil)
+      route  = routes.detect { |route| route.path == env['PATH_INFO'] }
 
-      if endpoint
-        Rack::Response.new(endpoint.call(env))
+      if route
+        Rack::Response.new(route.call(env))
       else
         NotFound
       end

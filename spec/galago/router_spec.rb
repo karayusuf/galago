@@ -12,20 +12,14 @@ module Galago
         router = Router.new
         router.add_route(:get, '/users', rack_app)
 
-        expect(router.routes).to eql({
-          'GET'    => { '/users' => rack_app },
-          'PATCH'  => {},
-          'POST'   => {},
-          'PUT'    => {},
-          'DELETE' => {}
-        })
+        expect(router).to have_route(:get, '/users')
       end
 
       it "raises an error when an invalid http verb is provided" do
         router = Router.new
 
         expect { router.add_route(:foo, '/foo', rack_app)
-        }.to raise_error Router::HttpVerbInvalid
+        }.to raise_error Router::Route::RequestMethodInvalid
       end
     end
 
