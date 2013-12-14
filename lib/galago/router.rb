@@ -15,8 +15,8 @@ module Galago
     end
 
     def add_route(request_method, path, application)
-      endpoint = Route.new(request_method, path, application)
-      routes[endpoint.request_method] << endpoint
+      route = Route.new(request_method, path, application)
+      routes[route.request_method] << route
     end
 
     def has_route?(http_verb, path)
