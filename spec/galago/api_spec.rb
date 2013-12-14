@@ -10,6 +10,8 @@ module Galago
         patch  '/users/:id', lambda { |env| 'patch'  }
         put    '/users/:id', lambda { |env| 'put'    }
         delete '/users/:id', lambda { |env| 'delete' }
+
+        get '/errors/standard', lambda { |env| raise StandardError.new("Error") }
       end
     end
 
@@ -27,6 +29,18 @@ module Galago
         it "sets the response body to the value of the block" do
           get '/users'
           expect(last_response.body).to eql('get')
+        end
+      end
+
+      context "errors" do
+        it "has a 500 response code" do
+          get '/errors/standard'
+          expect(last_response.status).to eql(500)
+        end
+
+        it "has a response body of the error message" do
+          get '/errors/standard'
+          expect(last_response.body).to eql "Error"
         end
       end
 

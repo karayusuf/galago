@@ -1,8 +1,6 @@
 module Galago
   class Router
 
-    NotFound = [ 404, { 'Content-Type' => 'text/plain' }, ["Not Found"]]
-
     REQUEST_METHODS = [
       "GET",
       "PATCH",
@@ -35,9 +33,13 @@ module Galago
       route  = routes.detect { |route| route.path == env['PATH_INFO'] }
 
       if route
-        Rack::Response.new(route.call(env))
+        begin
+          Rack::Response.new(route.call(env))
+        rescue StandardError => e
+          Rack::Response.new(e.message, 500)
+        end
       else
-        NotFound
+        Rack::Response.new("Not Found", 404)
       end
     end
 
