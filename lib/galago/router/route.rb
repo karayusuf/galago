@@ -1,21 +1,15 @@
 module Galago
   class Router::Route
 
-    class RequestMethodInvalid < ArgumentError; end
-    REQUEST_METHODS = ["GET", "PATCH", "POST", "PUT", "DELETE"]
+    attr_reader :request_method, :path, :action
 
     def initialize(request_method, path, action)
-      @request_method = sanitize_request_method!(request_method)
+      @request_method = request_method.to_s.upcase
       @path = path
       @action = action
-    end
 
-    def request_method
-      @request_method.to_s.upcase
-    end
-
-    def path
-      @path
+      validate_action!
+      validate_request_method!
     end
 
     def call(env)
@@ -24,13 +18,13 @@ module Galago
 
     private
 
-    def sanitize_request_method!(request_method)
-      request_method = request_method.to_s.upcase
+    def validate_action!
+      action.respond_to?(:call) or raise Router::ActionInvalid.new(action)
+    end
 
-      if REQUEST_METHODS.include?(request_method)
-        request_method
-      else
-        raise RequestMethodInvalid.new(request_method)
+    def validate_request_method!
+      unless Router::REQUEST_METHODS.include?(request_method)
+        raise Router::RequestMethodInvalid.new(request_method)
       end
     end
   end

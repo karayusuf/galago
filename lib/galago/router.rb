@@ -1,17 +1,23 @@
 module Galago
   class Router
+
     NotFound = [ 404, { 'Content-Type' => 'text/plain' }, ["Not Found"]]
+
+    REQUEST_METHODS = [
+      "GET",
+      "PATCH",
+      "POST",
+      "PUT",
+      "DELETE"
+    ]
 
     attr_reader :routes
 
     def initialize
-      @routes = {
-        "GET"    => [],
-        "PATCH"  => [],
-        "POST"   => [],
-        "PUT"    => [],
-        "DELETE" => []
-      }
+      @routes = REQUEST_METHODS.each_with_object({}) do |request_method, routes|
+        routes[request_method] = []
+        routes
+      end
     end
 
     def add_route(request_method, path, application)

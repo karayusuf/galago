@@ -19,21 +19,21 @@ module Galago
         router = Router.new
 
         expect { router.add_route(:foo, '/foo', rack_app)
-        }.to raise_error Router::Route::RequestMethodInvalid
+        }.to raise_error Router::RequestMethodInvalid
       end
     end
 
     describe "has_route?" do
       it "returns true when the route has been added" do
         router = Router.new
-        router.add_route(:post, '/users', anything)
+        router.add_route(:post, '/users', lambda {})
 
         expect(router).to have_route(:post, '/users')
       end
 
       it "returns false when the route has not been added" do
         router = Router.new
-        router.add_route(:post, '/users', anything)
+        router.add_route(:post, '/users', lambda {})
 
         expect(router).not_to have_route(:get, '/users')
       end
