@@ -23,13 +23,13 @@ module Galago
       routes[route.request_method] << route
     end
 
-    def has_route?(http_verb, path)
-      routes = routes_for_http_verb(http_verb)
+    def has_route?(request_method, path)
+      routes = routes_for_request_method(request_method)
       routes.any? { |route| route.path == path }
     end
 
     def process_request(env)
-      routes = routes_for_http_verb(env['REQUEST_METHOD'])
+      routes = routes_for_request_method(env['REQUEST_METHOD'])
       route  = routes.detect { |route| route.path == env['PATH_INFO'] }
 
       if route
@@ -45,11 +45,9 @@ module Galago
 
     private
 
-    def routes_for_http_verb(http_verb)
-      @routes.fetch(http_verb.to_s.upcase) do
-        message = "Got: #{http_verb}.\n"
-        message << "Expected one of: GET, PATCH, POST, PUT, DELETE"
-        fail HttpVerbInvalid.new(message)
+    def routes_for_request_method(request_method)
+      @routes.fetch(request_method.to_s.upcase) do
+        raise RequestMethodInvalid.new(request_method)
       end
     end
 
