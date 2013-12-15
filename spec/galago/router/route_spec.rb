@@ -1,4 +1,4 @@
-require 'galago'
+require 'spec_helper'
 
 module Galago
   describe Router::Route do

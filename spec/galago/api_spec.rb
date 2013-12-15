@@ -1,5 +1,4 @@
-require 'galago'
-require 'rack/test'
+require 'spec_helper'
 
 module Galago
   describe API do
@@ -18,8 +17,6 @@ module Galago
     let(:app) { ExampleApi }
 
     describe ".call" do
-      include Rack::Test::Methods
-
       context "successful request" do
         it "has a 200 response code" do
           get '/users'
