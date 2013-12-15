@@ -82,15 +82,15 @@ module Galago
       end
 
       it "has a patch route" do
-        expect(subject).to have_endpoint(:patch, '/users/:id')
+        expect(subject).to have_endpoint(:patch, '/users/1')
       end
 
       it "has a put route" do
-        expect(subject).to have_endpoint(:put, '/users/:id')
+        expect(subject).to have_endpoint(:put, '/users/2')
       end
 
       it "has a delete route" do
-        expect(subject).to have_endpoint(:delete, '/users/:id')
+        expect(subject).to have_endpoint(:delete, '/users/4')
       end
     end
   end

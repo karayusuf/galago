@@ -20,7 +20,7 @@ module Galago
       context "path" do
         it "remembers the path" do
           endpoint = Router::Endpoint.new('GET', '/foo', lambda {})
-          expect(endpoint.path).to eql '/foo'
+          expect(endpoint.path.to_s).to eql '/foo'
         end
       end
 

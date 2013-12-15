@@ -31,6 +31,13 @@ module Galago
         expect(router).to have_endpoint(:post, '/users')
       end
 
+      it "returns true when the route has a path param" do
+        router = Router.new
+        router.add_endpoint(:get, '/users/:id', lambda {})
+
+        expect(router).to have_endpoint(:get, '/users/42')
+      end
+
       it "returns false when the route has not been added" do
         router = Router.new
         router.add_endpoint(:post, '/users', lambda {})

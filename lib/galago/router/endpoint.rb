@@ -1,5 +1,6 @@
 require 'galago/router'
 require 'galago/router/response'
+require 'galago/router/path'
 
 module Galago
   class Router::Endpoint
@@ -8,11 +9,15 @@ module Galago
 
     def initialize(request_method, path, action)
       @request_method = request_method.to_s.upcase
-      @path = path
+      @path = Router::Path.new(path)
       @action = action
 
       validate_action!
       validate_request_method!
+    end
+
+    def recognizes_path?(request_path)
+      @path.recognizes?(request_path)
     end
 
     def call(env)

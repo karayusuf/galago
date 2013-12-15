@@ -25,12 +25,14 @@ module Galago
 
     def has_endpoint?(request_method, path)
       endpoints = endpoints_for_request_method(request_method)
-      endpoints.any? { |endpoint| endpoint.path == path }
+      endpoints.any? { |endpoint| endpoint.recognizes_path?(path) }
     end
 
     def process_request(env)
       endpoints = endpoints_for_request_method(env['REQUEST_METHOD'])
-      endpoint  = endpoints.detect { |endpoint| endpoint.path == env['PATH_INFO'] }
+      endpoint = endpoints.detect do |endpoint|
+        endpoint.recognizes_path?(env['PATH_INFO'])
+      end
 
       if endpoint
         endpoint.call(env)
