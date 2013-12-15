@@ -9,32 +9,32 @@ module Galago
       "DELETE"
     ]
 
-    attr_reader :routes
+    attr_reader :endpoints
 
     def initialize
-      @routes = REQUEST_METHODS.each_with_object({}) do |request_method, routes|
-        routes[request_method] = []
-        routes
+      @endpoints = REQUEST_METHODS.each_with_object({}) do |request_method, endpoints|
+        endpoints[request_method] = []
+        endpoints
       end
     end
 
-    def add_route(request_method, path, application)
-      route = Route.new(request_method, path, application)
-      routes[route.request_method] << route
+    def add_endpoint(request_method, path, application)
+      endpoint = Endpoint.new(request_method, path, application)
+      endpoints[endpoint.request_method] << endpoint
     end
 
-    def has_route?(request_method, path)
-      routes = routes_for_request_method(request_method)
-      routes.any? { |route| route.path == path }
+    def has_endpoint?(request_method, path)
+      endpoints = endpoints_for_request_method(request_method)
+      endpoints.any? { |endpoint| endpoint.path == path }
     end
 
     def process_request(env)
-      routes = routes_for_request_method(env['REQUEST_METHOD'])
-      route  = routes.detect { |route| route.path == env['PATH_INFO'] }
+      endpoints = endpoints_for_request_method(env['REQUEST_METHOD'])
+      endpoint  = endpoints.detect { |endpoint| endpoint.path == env['PATH_INFO'] }
 
-      if route
+      if endpoint
         begin
-          Rack::Response.new(route.call(env))
+          Rack::Response.new(endpoint.call(env))
         rescue StandardError => e
           Rack::Response.new(e.message, 500)
         end
@@ -45,8 +45,8 @@ module Galago
 
     private
 
-    def routes_for_request_method(request_method)
-      @routes.fetch(request_method.to_s.upcase) do
+    def endpoints_for_request_method(request_method)
+      endpoints.fetch(request_method.to_s.upcase) do
         raise RequestMethodInvalid.new(request_method)
       end
     end

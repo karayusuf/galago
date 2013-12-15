@@ -2,7 +2,7 @@ require 'galago/router'
 require 'galago/router/response'
 
 module Galago
-  class Router::Route
+  class Router::Endpoint
 
     attr_reader :request_method, :path, :action
 

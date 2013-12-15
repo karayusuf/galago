@@ -58,23 +58,23 @@ module Galago
       subject { ExampleApi.router }
 
       it "has a get route" do
-        expect(subject).to have_route(:get, '/users')
+        expect(subject).to have_endpoint(:get, '/users')
       end
 
       it "has a post route" do
-        expect(subject).to have_route(:post, '/users')
+        expect(subject).to have_endpoint(:post, '/users')
       end
 
       it "has a patch route" do
-        expect(subject).to have_route(:patch, '/users/:id')
+        expect(subject).to have_endpoint(:patch, '/users/:id')
       end
 
       it "has a put route" do
-        expect(subject).to have_route(:put, '/users/:id')
+        expect(subject).to have_endpoint(:put, '/users/:id')
       end
 
       it "has a delete route" do
-        expect(subject).to have_route(:delete, '/users/:id')
+        expect(subject).to have_endpoint(:delete, '/users/:id')
       end
     end
   end
