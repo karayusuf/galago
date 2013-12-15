@@ -33,11 +33,7 @@ module Galago
       endpoint  = endpoints.detect { |endpoint| endpoint.path == env['PATH_INFO'] }
 
       if endpoint
-        begin
-          Rack::Response.new(endpoint.call(env))
-        rescue StandardError => e
-          Rack::Response.new(e.message, 500)
-        end
+        endpoint.call(env)
       else
         Rack::Response.new("Not Found", 404)
       end
