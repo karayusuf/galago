@@ -1,3 +1,6 @@
+require 'galago/router'
+require 'galago/router/response'
+
 module Galago
   class Router::Route
 
@@ -13,7 +16,7 @@ module Galago
     end
 
     def call(env)
-      @action.call(env)
+      Router::Response.for(env, action)
     end
 
     private

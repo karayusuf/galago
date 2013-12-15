@@ -38,13 +38,5 @@ module Galago
       end
     end
 
-    context "#call" do
-      it "calls the action with the env" do
-        action = lambda { |env| env[:bar] }
-
-        route = Router::Route.new('GET', '/foo', action)
-        expect(route.call(bar: 'baz')). to eql 'baz'
-      end
-    end
   end
 end

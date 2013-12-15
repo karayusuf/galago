@@ -11,7 +11,6 @@ module Galago
     def self.call(env)
       router.process_request(env)
     end
-
   end
 end
 
