@@ -4,13 +4,29 @@ module Galago
   describe API do
     class ExampleApi < Galago::API
       routes do
-        get    '/users',     lambda { |env| 'get'    }
-        post   '/users',     lambda { |env| 'post'   }
-        patch  '/users/:id', lambda { |env| 'patch'  }
-        put    '/users/:id', lambda { |env| 'put'    }
-        delete '/users/:id', lambda { |env| 'delete' }
+        get '/users' do
+          'get'
+        end
 
-        get '/errors/standard', lambda { |env| raise StandardError.new("Error") }
+        post '/users' do
+          'post'
+        end
+
+        patch '/users/:id' do
+          'patch'
+        end
+
+        put '/users/:id' do
+          'put'
+        end
+
+        delete '/users/:id' do
+          'delete'
+        end
+
+        get '/errors/standard' do
+          raise StandardError.new("Error")
+        end
       end
     end
 

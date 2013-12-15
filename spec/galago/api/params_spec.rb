@@ -4,7 +4,9 @@ module Galago
   describe "params" do
     example_api do
       routes do
-        get '/params_via_string', lambda { |env| params["bar"] }
+        get '/params_via_string' do
+          params["bar"]
+        end
       end
     end
 

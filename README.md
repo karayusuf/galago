@@ -22,11 +22,25 @@ Or install it yourself as:
 ```ruby
 module GitHub::API < Galago::API
   routes do
-    get    '/users',     lambda { |env| 'get'    }
-    post   '/users',     lambda { |env| 'post'   }
-    patch  '/users/:id', lambda { |env| 'patch'  }
-    put    '/users/:id', lambda { |env| 'put'    }
-    delete '/users/:id', lambda { |env| 'delete' }
+    get '/users' do
+      'get user list'
+    end
+
+    post '/users' do
+      'create a user'
+    end
+
+    patch '/users/:id' do
+      'update a user'
+    end
+
+    put '/users/:id' do
+      'update a user'
+    end
+
+    delete '/users/:id' do
+      'delete a user'
+    end
   end
 end
 

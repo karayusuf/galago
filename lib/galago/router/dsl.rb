@@ -5,23 +5,23 @@ module Galago
       instance_eval(&block)
     end
 
-    def get(path, application)
+    def get(path, &application)
       @router.add_endpoint("GET", path, application)
     end
 
-    def patch(path, application)
+    def patch(path, &application)
       @router.add_endpoint("PATCH", path, application)
     end
 
-    def post(path, application)
+    def post(path, &application)
       @router.add_endpoint("POST", path, application)
     end
 
-    def put(path, application)
+    def put(path, &application)
       @router.add_endpoint("PUT", path, application)
     end
 
-    def delete(path, application)
+    def delete(path, &application)
       @router.add_endpoint("DELETE", path, application)
     end
   end
