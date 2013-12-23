@@ -5,16 +5,17 @@ module Galago
       @path = path.to_s
     end
 
-    def regex
-      @regex_path ||= convert_path_to_regex(@path)
-    end
-
     def recognizes?(request_path)
       request_path =~ regex
     end
 
-    def path_parameters
-      @path_parameters ||= @path.scan(/\:\w+/).flatten
+    def named_parameters
+      @path_parameters ||= @path.scan(/\:(\w+)/).flatten
+    end
+
+    def identify_params_in_path(request_path)
+      values = regex.match(request_path).captures
+      Hash[named_parameters.zip(values)]
     end
 
     def to_s
@@ -22,6 +23,10 @@ module Galago
     end
 
     private
+
+    def regex
+      @regex_path ||= convert_path_to_regex(@path)
+    end
 
     def convert_path_to_regex(path)
       regexp = path.to_s.gsub(/\:\w+/, '([\w-]+)')

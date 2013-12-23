@@ -17,6 +17,49 @@ module Galago
         end
       end
 
+      context "#recognizes?" do
+        it "recognizes a paths with no named parameters" do
+          path = Router::Path.new('/users')
+          expect(path).to be_recognizes('/users')
+        end
+
+        it "recognizes a path with named parameters" do
+          path = Router::Path.new('/users/:id')
+          expect(path).to be_recognizes('/users/32')
+        end
+      end
+
+      context "#named_parameters" do
+        it "has none when no segments start with a ':'" do
+          path = Router::Path.new('/users')
+          expect(path).to have(0).named_parameters
+        end
+
+        it "returns segments starting with a ':'" do
+          path = Router::Path.new('/accounts/:account_id/users/:id')
+          expect(path.named_parameters).to eql ['account_id', 'id']
+        end
+      end
+
+      context "#identify_params_in_path" do
+        it "does not find named parameters when the path has none" do
+          path = Router::Path.new('/accounts')
+          identified_parameters = path.identify_params_in_path('/accounts')
+
+          expect(identified_parameters).to be_empty
+        end
+
+        it "maps the names for params in the path" do
+          path = Router::Path.new('/accounts/:account_id/users/:id')
+          identified_parameters = path.identify_params_in_path('/accounts/42/users/11')
+
+          expect(identified_parameters).to eql({
+            'account_id' => '42',
+            'id'         => '11'
+          })
+        end
+      end
+
       context "path" do
         it "remembers the path" do
           endpoint = Router::Endpoint.new('GET', '/foo', lambda {})
