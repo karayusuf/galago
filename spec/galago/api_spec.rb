@@ -1,8 +1,8 @@
 require 'spec_helper'
 
 module Galago
-  describe API do
-    class ExampleApi < Galago::API
+  describe Application do
+    class ExampleApi < Galago::Application
       routes do
         get '/users' do
           'get'

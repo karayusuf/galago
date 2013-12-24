@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Galago
   describe "params" do
-    example_api do
+    application do
       routes do
         get '/params_via_string' do
           params["bar"]

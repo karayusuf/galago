@@ -20,7 +20,7 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-module GitHub::API < Galago::API
+module GitHub::Application < Galago::Application
   routes do
     get '/users' do
       users = User.all
@@ -47,7 +47,7 @@ module GitHub::API < Galago::API
   end
 end
 
-run GitHub::API
+run GitHub::Application
 ```
 
 ## Contributing

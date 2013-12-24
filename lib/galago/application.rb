@@ -1,5 +1,5 @@
 module Galago
-  class API
+  class Application
     def self.router
       @router ||= Router.new
     end

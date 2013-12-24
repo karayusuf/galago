@@ -8,9 +8,9 @@ RSpec.configure do |config|
 
   config.include Rack::Test::Methods
 
-  def example_api(&block)
+  def application(&block)
     let(:app) do
-      klass = Class.new(Galago::API)
+      klass = Class.new(Galago::Application)
       klass.class_eval(&block)
       klass
     end
