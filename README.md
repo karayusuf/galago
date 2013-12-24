@@ -23,28 +23,31 @@ Or install it yourself as:
 module GitHub::API < Galago::API
   routes do
     get '/users' do
-      'get user list'
+      users = User.all
     end
 
     post '/users' do
-      'create a user'
+      user = User.create! params['user']
     end
 
-    patch '/users/:id' do
-      'update a user'
+    patch '/users/:name' do
+      user = User.find_by_name params['name']
+      user.update! params['user']
     end
 
-    put '/users/:id' do
-      'update a user'
+    put '/users/:name' do
+      user = User.find_by_name params['name']
+      user.update! params['user']
     end
 
-    delete '/users/:id' do
-      'delete a user'
+    delete '/users/:name' do
+      user = User.find_by_name params['name']
+      user.destroy!
     end
   end
 end
 
-run Foo::API
+run GitHub::API
 ```
 
 ## Contributing
