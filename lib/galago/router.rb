@@ -24,17 +24,11 @@ module Galago
     end
 
     def has_endpoint?(request_method, path)
-      endpoints = endpoints_for_request_method(request_method)
-      endpoints.any? { |endpoint| endpoint.recognizes_path?(path) }
+      find_endpoint(request_method, path)
     end
 
     def process_request(env)
-      endpoints = endpoints_for_request_method(env['REQUEST_METHOD'])
-      endpoint = endpoints.detect do |endpoint|
-        endpoint.recognizes_path?(env['PATH_INFO'])
-      end
-
-      if endpoint
+      if endpoint = find_endpoint(env['REQUEST_METHOD'], env['PATH_INFO'])
         endpoint.call(env)
       else
         Rack::Response.new("Not Found", 404)
@@ -42,6 +36,11 @@ module Galago
     end
 
     private
+
+    def find_endpoint(request_method, path)
+      endpoints = endpoints_for_request_method(request_method)
+      endpoint = endpoints.detect { |endpoint| endpoint.recognizes_path?(path) }
+    end
 
     def endpoints_for_request_method(request_method)
       endpoints.fetch(request_method.to_s.upcase) do
