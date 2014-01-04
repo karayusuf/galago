@@ -9,27 +9,27 @@ module Galago
       "DELETE"
     ]
 
-    attr_reader :endpoints
+    attr_reader :routes
 
     def initialize
-      @endpoints = REQUEST_METHODS.each_with_object({}) do |request_method, endpoints|
-        endpoints[request_method] = []
-        endpoints
+      @routes = REQUEST_METHODS.each_with_object({}) do |request_method, routes|
+        routes[request_method] = []
+        routes
       end
     end
 
-    def add_endpoint(request_method, path, application)
-      endpoint = Endpoint.new(request_method, path, application)
-      endpoints[endpoint.request_method] << endpoint
+    def add_route(request_method, path, application)
+      route = Route.new(request_method, path, application)
+      routes[route.request_method] << route
     end
 
-    def has_endpoint?(request_method, path)
-      find_endpoint(request_method, path)
+    def has_route?(request_method, path)
+      find_route(request_method, path)
     end
 
     def process_request(env)
-      if endpoint = find_endpoint(env['REQUEST_METHOD'], env['PATH_INFO'])
-        endpoint.call(env)
+      if route = find_route(env['REQUEST_METHOD'], env['PATH_INFO'])
+        route.call(env)
       else
         Rack::Response.new("Not Found", 404)
       end
@@ -37,13 +37,13 @@ module Galago
 
     private
 
-    def find_endpoint(request_method, path)
-      endpoints = endpoints_for_request_method(request_method)
-      endpoint = endpoints.detect { |endpoint| endpoint.recognizes_path?(path) }
+    def find_route(request_method, path)
+      routes = routes_for_request_method(request_method)
+      route = routes.detect { |route| route.recognizes_path?(path) }
     end
 
-    def endpoints_for_request_method(request_method)
-      endpoints.fetch(request_method.to_s.upcase) do
+    def routes_for_request_method(request_method)
+      routes.fetch(request_method.to_s.upcase) do
         raise RequestMethodInvalid.new(request_method)
       end
     end

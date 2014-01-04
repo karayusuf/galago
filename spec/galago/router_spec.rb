@@ -3,46 +3,46 @@ require 'spec_helper'
 module Galago
   describe Router do
 
-    describe "#add_endpoint" do
+    describe "#add_route" do
       let(:rack_app) do
         lambda { |env| "RackApp" }
       end
 
-      it "stores the endpoint" do
+      it "stores the route" do
         router = Router.new
-        router.add_endpoint(:get, '/users', rack_app)
+        router.add_route(:get, '/users', rack_app)
 
-        expect(router).to have_endpoint(:get, '/users')
+        expect(router).to have_route(:get, '/users')
       end
 
       it "raises an error when an invalid http verb is provided" do
         router = Router.new
 
-        expect { router.add_endpoint(:foo, '/foo', rack_app)
+        expect { router.add_route(:foo, '/foo', rack_app)
         }.to raise_error Router::RequestMethodInvalid
       end
     end
 
-    describe "has_endpoint?" do
+    describe "has_route?" do
       it "returns true when the route has been added" do
         router = Router.new
-        router.add_endpoint(:post, '/users', lambda {})
+        router.add_route(:post, '/users', lambda {})
 
-        expect(router).to have_endpoint(:post, '/users')
+        expect(router).to have_route(:post, '/users')
       end
 
       it "returns true when the route has a path param" do
         router = Router.new
-        router.add_endpoint(:get, '/users/:id', lambda {})
+        router.add_route(:get, '/users/:id', lambda {})
 
-        expect(router).to have_endpoint(:get, '/users/42')
+        expect(router).to have_route(:get, '/users/42')
       end
 
       it "returns false when the route has not been added" do
         router = Router.new
-        router.add_endpoint(:post, '/users', lambda {})
+        router.add_route(:post, '/users', lambda {})
 
-        expect(router).not_to have_endpoint(:get, '/users')
+        expect(router).not_to have_route(:get, '/users')
       end
     end
 
