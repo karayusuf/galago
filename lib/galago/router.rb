@@ -24,7 +24,7 @@ module Galago
     end
 
     def has_route?(request_method, path)
-      find_route(request_method, path)
+      find_route(request_method, path) ? true : false
     end
 
     def process_request(env)
