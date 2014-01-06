@@ -80,6 +80,6 @@ module Galago
         end
       end
     end
-
   end
 end
+
