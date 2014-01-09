@@ -8,6 +8,8 @@ module Galago
           'get'
         end
 
+        get '/users/:id', to: proc { "Specific user" }
+
         post '/users' do
           'post'
         end
@@ -42,6 +44,11 @@ module Galago
         it "sets the response body to the value of the block" do
           get '/users'
           expect(last_response.body).to eql('get')
+        end
+
+        it "calls the provided application" do
+          get '/users/1'
+          expect(last_response.body).to eql('Specific user')
         end
       end
 
