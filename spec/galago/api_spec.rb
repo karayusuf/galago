@@ -8,6 +8,10 @@ module Galago
           'get'
         end
 
+        get '/nil/body' do
+          nil
+        end
+
         get '/users/:id', to: proc { "Specific user" }
 
         post '/users' do
@@ -49,6 +53,11 @@ module Galago
         it "calls the provided application" do
           get '/users/1'
           expect(last_response.body).to eql('Specific user')
+        end
+
+        it "converts the response to a string" do
+          get '/nil/body'
+          expect(last_response.body).to eql('')
         end
       end
 

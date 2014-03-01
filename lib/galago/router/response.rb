@@ -24,7 +24,7 @@ module Galago
 
     def body
       begin
-        instance_eval(&@block)
+        instance_eval(&@block).to_s
       rescue StandardError => error
         @status = 500
         error.message
