@@ -1,13 +1,12 @@
-# Galago
+# Galago Router
 
-Galago is an API micro framework for Ruby.
-I am building it to gain more appreciation for existing tools.
+A rack router.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'galago'
+    gem 'galago-router'
 
 And then execute:
 
@@ -15,35 +14,18 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install galago
+    $ gem install galago-router
 
 ## Usage
 
 ```ruby
-module GitHub::Application < Galago::Application
+class MyApp < Galago::Router
   routes do
-    get '/users' do
-      users = User.all
-    end
-
-    post '/users' do
-      user = User.create! params['user']
-    end
-
-    patch '/users/:name' do
-      user = User.find_by_name params['name']
-      user.update! params['user']
-    end
-
-    put '/users/:name' do
-      user = User.find_by_name params['name']
-      user.update! params['user']
-    end
-
-    delete '/users/:name' do
-      user = User.find_by_name params['name']
-      user.destroy!
-    end
+    get '/users',  to: YourRackApp
+    post '/users', to: AnotherRackApp
+    patch '/users', to: YetAnotherRackApp
+    put '/users/:name', to: MoreRackApp
+    delete '/users/:name', to: DeleteRackApp
   end
 end
 
