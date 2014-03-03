@@ -2,6 +2,25 @@ require 'spec_helper'
 
 module Galago
   describe Router do
+    let(:router) { Class.new(Router) }
+
+    describe '.call' do
+      it 'tells the router to process the request' do
+        expect(router.router).to receive(:process_request).with('env')
+        router.call('env')
+      end
+    end
+
+    describe '.router' do
+      it 'builds an instance if the router' do
+        expect(router.router).to be_a Router
+      end
+
+      it 'remembers the router that was built' do
+        router_id = router.router.object_id
+        expect(router.router.object_id).to eql router_id
+      end
+    end
 
     describe "#add_route" do
       let(:rack_app) do
