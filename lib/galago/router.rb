@@ -1,6 +1,10 @@
 module Galago
   class Router
     require 'galago/router/dsl'
+    require 'galago/router/errors'
+    require 'galago/router/path'
+    require 'galago/router/route'
+    require 'galago/router/version'
 
     def self.call(env)
       router.process_request(env)

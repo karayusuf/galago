@@ -39,6 +39,35 @@ module Galago
       end
     end
 
+    describe "#add_path_params_to_env" do
+      let(:env) do
+        { 'rack.input' => anything }
+      end
+
+      it "adds the params" do
+        env['PATH_INFO'] = '/users/21/posts/42'
+
+        path = Router::Path.new('/users/:user_id/posts/:id')
+        path.add_path_params_to_env(env)
+
+        request = Rack::Request.new(env)
+        expect(request.params).to eql({
+          'user_id' => '21',
+          'id'      => '42'
+        })
+      end
+
+      it "does not add params when no path params exist" do
+        env['PATH_INFO'] = '/users'
+
+        path = Router::Path.new('/users')
+        path.add_path_params_to_env(env)
+
+        request = Rack::Request.new(env)
+        expect(request.params).to be_empty
+      end
+    end
+
     describe "#identify_params_in_path" do
       it "identifies each param and its value" do
         path = Router::Path.new('/users/:user_id/posts/:id')

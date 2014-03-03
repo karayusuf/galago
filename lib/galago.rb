@@ -1,5 +1,2 @@
-require 'galago/router'
-require 'galago/router/errors'
-require 'galago/router/path'
-require 'galago/router/route'
-require 'galago/router/version'
+module Galago
+end

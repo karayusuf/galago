@@ -1,4 +1,4 @@
-require 'galago'
+require 'galago/router'
 require 'rack/test'
 require 'pry'
 

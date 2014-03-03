@@ -17,6 +17,7 @@ module Galago
     end
 
     def call(env)
+      @path.add_path_params_to_env(env)
       action.call(env)
     end
 

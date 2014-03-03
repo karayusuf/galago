@@ -13,6 +13,13 @@ module Galago
       @path_parameters ||= @path.scan(/\:(\w+)/).flatten
     end
 
+    def add_path_params_to_env(env)
+      request = Rack::Request.new(env)
+      identify_params_in_path(request.path).each do |key, value|
+        request.update_param(key, value)
+      end
+    end
+
     def identify_params_in_path(request_path)
       values = regex.match(request_path).captures
       Hash[named_parameters.zip(values)]
