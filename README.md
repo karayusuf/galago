@@ -29,7 +29,7 @@ class MyApp < Galago::Router
   end
 end
 
-run GitHub::Application
+run MyApp
 ```
 
 ## Contributing
