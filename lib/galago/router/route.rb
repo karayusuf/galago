@@ -1,5 +1,4 @@
 require 'galago/router'
-require 'galago/router/response'
 require 'galago/router/path'
 
 module Galago
@@ -21,11 +20,7 @@ module Galago
     end
 
     def call(env)
-      begin
-        action.call(env)
-      rescue StandardError => e
-        Rack::Response.new(e.message, 500)
-      end
+      action.call(env)
     end
 
     private

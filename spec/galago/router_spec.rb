@@ -86,7 +86,9 @@ module Galago
           'PATH_INFO' => '/bar'
         })
 
-        expect(response.first).to eql 404
+        expect(response[0]).to eql(404)
+        expect(response[1]).to eql({ 'Content-Length' => '9' })
+        expect(response[2].body).to eql(['Not Found'])
       end
     end
 
