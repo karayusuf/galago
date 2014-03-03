@@ -1,5 +1,6 @@
 module Galago
   class Router
+    require 'galago/router/dsl'
 
     def self.call(env)
       router.process_request(env)

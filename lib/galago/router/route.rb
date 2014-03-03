@@ -1,6 +1,3 @@
-require 'galago/router'
-require 'galago/router/path'
-
 module Galago
   class Router::Route
 
