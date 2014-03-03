@@ -68,22 +68,5 @@ module Galago
       end
     end
 
-    describe "#identify_params_in_path" do
-      it "identifies each param and its value" do
-        path = Router::Path.new('/users/:user_id/posts/:id')
-        path_params = path.identify_params_in_path('/users/1/posts/2')
-
-        expect(path_params).to eql({
-          'user_id' => '1',
-          'id'      => '2'
-        })
-      end
-
-      it "returns empty when no path params are present" do
-        path = Router::Path.new('/users')
-        expect(path.identify_params_in_path('/users')).to be_empty
-      end
-    end
-
   end
 end

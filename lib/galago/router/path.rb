@@ -16,14 +16,10 @@ module Galago
 
       def add_path_params_to_env(env)
         request = Rack::Request.new(env)
-        identify_params_in_path(request.path).each do |key, value|
-          request.update_param(key, value)
-        end
-      end
 
-      def identify_params_in_path(request_path)
-        values = regex.match(request_path).captures
-        Hash[named_parameters.zip(values)]
+        if path_params = identify_params_in_path(request.path)
+          path_params.each { |key, value| request.update_param(key, value) }
+        end
       end
 
       def to_s
@@ -39,6 +35,12 @@ module Galago
       def convert_path_to_regex(path)
         regexp = path.to_s.gsub(/\:\w+/, '([\w-]+)')
         Regexp.new("^#{regexp}$")
+      end
+
+      def identify_params_in_path(path)
+        if match = regex.match(path)
+          named_parameters.zip(match.captures)
+        end
       end
 
     end

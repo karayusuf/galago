@@ -2,6 +2,30 @@ require 'spec_helper'
 
 module Galago
   describe Router::Route do
+    context "#call" do
+      let(:env) do
+        { 'PATH_INFO' => '/foo' }
+      end
+
+      let(:action) do
+        lambda { |env| "foo" }
+      end
+
+      it "adds the path's params to the env" do
+        route = Router::Route.new('GET', '/foo', action)
+        expect(route.path).to receive(:add_path_params_to_env).with(env)
+
+        route.call(env)
+      end
+
+      it "calls the route's action" do
+        route = Router::Route.new('GET', '/bar', action)
+        expect(action).to receive(:call).with(env)
+
+        route.call(env)
+      end
+    end
+
     context "#initialize" do
       context "request method" do
         it "errors when an invalid request method is provided" do
@@ -38,25 +62,6 @@ module Galago
         it "returns segments starting with a ':'" do
           path = Router::Path.new('/accounts/:account_id/users/:id')
           expect(path.named_parameters).to eql ['account_id', 'id']
-        end
-      end
-
-      context "#identify_params_in_path" do
-        it "does not find named parameters when the path has none" do
-          path = Router::Path.new('/accounts')
-          identified_parameters = path.identify_params_in_path('/accounts')
-
-          expect(identified_parameters).to be_empty
-        end
-
-        it "maps the names for params in the path" do
-          path = Router::Path.new('/accounts/:account_id/users/:id')
-          identified_parameters = path.identify_params_in_path('/accounts/42/users/11')
-
-          expect(identified_parameters).to eql({
-            'account_id' => '42',
-            'id'         => '11'
-          })
         end
       end
 
