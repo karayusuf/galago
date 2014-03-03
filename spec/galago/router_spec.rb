@@ -65,5 +65,30 @@ module Galago
       end
     end
 
+    describe "process_request" do
+      it "calls the rack app when the route is found" do
+        router = Router.new
+        router.add_route(:get, '/foo', lambda { |env| [200, {}, 'bar'] })
+
+        response = router.process_request({
+          'REQUEST_METHOD' => 'GET',
+          'PATH_INFO' => '/foo'
+        })
+
+        expect(response).to eql [200, {}, 'bar']
+      end
+
+      it "returns 404 when no route matchs the path" do
+        router = Router.new
+
+        response = router.process_request({
+          'REQUEST_METHOD' => 'GET',
+          'PATH_INFO' => '/bar'
+        })
+
+        expect(response.first).to eql 404
+      end
+    end
+
   end
 end

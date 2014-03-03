@@ -22,7 +22,7 @@ module Galago
 
     def call(env)
       begin
-        Router::Response.for(env, path, action)
+        action.call(env)
       rescue StandardError => e
         Rack::Response.new(e.message, 500)
       end

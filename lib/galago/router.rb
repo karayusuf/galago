@@ -43,7 +43,7 @@ module Galago
       if route = find_route(env['REQUEST_METHOD'], env['PATH_INFO'])
         route.call(env)
       else
-        Rack::Response.new("Not Found", 404)
+        Rack::Response.new("Not Found", 404).finish
       end
     end
 
