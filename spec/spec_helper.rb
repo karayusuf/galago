@@ -10,7 +10,7 @@ RSpec.configure do |config|
 
   def application(&block)
     let(:app) do
-      klass = Class.new(Galago::Application)
+      klass = Class.new(Galago::Router)
       klass.class_eval(&block)
       klass
     end

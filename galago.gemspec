@@ -1,14 +1,14 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'galago/version'
+require 'galago/router/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "galago-router"
-  spec.version       = Galago::VERSION
+  spec.version       = Galago::Router::VERSION
   spec.authors       = ["Joe Karayusuf"]
   spec.email         = ["jkarayusuf@gmail.com"]
-  spec.description   = %q{Micro API framework}
+  spec.description   = %q{Rack router}
   spec.summary       = %q{}
   spec.homepage      = ""
   spec.license       = "MIT"
@@ -25,5 +25,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rack-test"
   spec.add_development_dependency "rake"
   spec.add_development_dependency "rspec"
-
 end

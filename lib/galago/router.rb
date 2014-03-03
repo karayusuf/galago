@@ -1,6 +1,18 @@
 module Galago
   class Router
 
+    def self.call(env)
+      router.process_request(env)
+    end
+
+    def self.routes(&block)
+      Router::DSL.new(router, block)
+    end
+
+    def self.router
+      @router ||= Router.new
+    end
+
     REQUEST_METHODS = [
       "GET",
       "PATCH",
