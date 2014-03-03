@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'galago/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "galago"
+  spec.name          = "galago-router"
   spec.version       = Galago::VERSION
   spec.authors       = ["Joe Karayusuf"]
   spec.email         = ["jkarayusuf@gmail.com"]
