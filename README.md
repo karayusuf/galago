@@ -19,17 +19,19 @@ Or install it yourself as:
 ## Usage
 
 ```ruby
-class MyApp < Galago::Router
-  routes do
-    get '/users',  to: YourRackApp
-    post '/users', to: AnotherRackApp
-    patch '/users', to: YetAnotherRackApp
-    put '/users/:name', to: MoreRackApp
-    delete '/users/:name', to: DeleteRackApp
-  end
+# config.ru
+require 'galago/router'
+require 'rack/lobster'
+
+router = Galago::Router.new do
+  get    '/lobsters',       to: Rack::Lobster.new
+  post   '/lobsters',       to: Rack::Lobster.new
+  patch  '/lobsters/:name', to: Rack::Lobster.new
+  put    '/lobsters/:name', to: Rack::Lobster.new
+  delete '/lobsters/:name', to: Rack::Lobster.new
 end
 
-run MyApp
+run router
 ```
 
 ## Contributing

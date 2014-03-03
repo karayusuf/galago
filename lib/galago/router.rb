@@ -6,18 +6,6 @@ module Galago
     require 'galago/router/route'
     require 'galago/router/version'
 
-    def self.call(env)
-      router.process_request(env)
-    end
-
-    def self.routes(&block)
-      Router::DSL.new(router, block)
-    end
-
-    def self.router
-      @router ||= Router.new
-    end
-
     REQUEST_METHODS = [
       "GET",
       "PATCH",
@@ -28,11 +16,13 @@ module Galago
 
     attr_reader :routes
 
-    def initialize
+    def initialize(&block)
       @routes = REQUEST_METHODS.each_with_object({}) do |request_method, routes|
         routes[request_method] = []
         routes
       end
+
+      Router::DSL.new(self, block) if block_given?
     end
 
     def add_route(request_method, path, application)
@@ -44,7 +34,7 @@ module Galago
       find_route(request_method, path) ? true : false
     end
 
-    def process_request(env)
+    def call(env)
       if route = find_route(env['REQUEST_METHOD'], env['PATH_INFO'])
         route.call(env)
       else

@@ -2,18 +2,9 @@ require 'spec_helper'
 
 module Galago
   describe Router do
-    let(:router) { Class.new(Router) }
-
-    describe '.call' do
-      it 'tells the router to process the request' do
-        expect(router.router).to receive(:process_request).with('env')
-        router.call('env')
-      end
-    end
-
     describe '.routes' do
       it 'adds the specified routes' do
-        router.routes do
+        router = Router.new do
           get    '/foo' , to: lambda { |env| 'bar' }
           post   '/foo' , to: lambda { |env| 'bar' }
           patch  '/foo' , to: lambda { |env| 'bar' }
@@ -21,22 +12,11 @@ module Galago
           delete '/foo' , to: lambda { |env| 'bar' }
         end
 
-        expect(router.router).to have_route(:get, '/foo')
-        expect(router.router).to have_route(:post, '/foo')
-        expect(router.router).to have_route(:patch, '/foo')
-        expect(router.router).to have_route(:put, '/foo')
-        expect(router.router).to have_route(:delete, '/foo')
-      end
-    end
-
-    describe '.router' do
-      it 'builds an instance if the router' do
-        expect(router.router).to be_a Router
-      end
-
-      it 'remembers the router that was built' do
-        router_id = router.router.object_id
-        expect(router.router.object_id).to eql router_id
+        expect(router).to have_route(:get, '/foo')
+        expect(router).to have_route(:post, '/foo')
+        expect(router).to have_route(:patch, '/foo')
+        expect(router).to have_route(:put, '/foo')
+        expect(router).to have_route(:delete, '/foo')
       end
     end
 
@@ -83,12 +63,12 @@ module Galago
       end
     end
 
-    describe "process_request" do
+    describe "#call" do
       it "calls the rack app when the route is found" do
         router = Router.new
         router.add_route(:get, '/foo', lambda { |env| [200, {}, 'bar'] })
 
-        response = router.process_request({
+        response = router.call({
           'REQUEST_METHOD' => 'GET',
           'PATH_INFO' => '/foo'
         })
@@ -99,7 +79,7 @@ module Galago
       it "returns 404 when no route matchs the path" do
         router = Router.new
 
-        response = router.process_request({
+        response = router.call({
           'REQUEST_METHOD' => 'GET',
           'PATH_INFO' => '/bar'
         })
