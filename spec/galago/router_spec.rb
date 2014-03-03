@@ -11,6 +11,24 @@ module Galago
       end
     end
 
+    describe '.routes' do
+      it 'adds the specified routes' do
+        router.routes do
+          get    '/foo' , to: lambda { |env| 'bar' }
+          post   '/foo' , to: lambda { |env| 'bar' }
+          patch  '/foo' , to: lambda { |env| 'bar' }
+          put    '/foo' , to: lambda { |env| 'bar' }
+          delete '/foo' , to: lambda { |env| 'bar' }
+        end
+
+        expect(router.router).to have_route(:get, '/foo')
+        expect(router.router).to have_route(:post, '/foo')
+        expect(router.router).to have_route(:patch, '/foo')
+        expect(router.router).to have_route(:put, '/foo')
+        expect(router.router).to have_route(:delete, '/foo')
+      end
+    end
+
     describe '.router' do
       it 'builds an instance if the router' do
         expect(router.router).to be_a Router

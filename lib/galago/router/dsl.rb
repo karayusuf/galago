@@ -5,29 +5,24 @@ module Galago
       instance_eval(&block)
     end
 
-    def get(path, options = {}, &application)
-      application = block_given? ? application : options[:to]
-      @router.add_route("GET", path, application)
+    def get(path, options)
+      @router.add_route("GET", path, options[:to])
     end
 
-    def patch(path, &application)
-      application = block_given? ? application : options[:to]
-      @router.add_route("PATCH", path, application)
+    def patch(path, options)
+      @router.add_route("PATCH", path, options[:to])
     end
 
-    def post(path, &application)
-      application = block_given? ? application : options[:to]
-      @router.add_route("POST", path, application)
+    def post(path, options)
+      @router.add_route("POST", path, options[:to])
     end
 
-    def put(path, &application)
-      application = block_given? ? application : options[:to]
-      @router.add_route("PUT", path, application)
+    def put(path, options)
+      @router.add_route("PUT", path, options[:to])
     end
 
-    def delete(path, &application)
-      application = block_given? ? application : options[:to]
-      @router.add_route("DELETE", path, application)
+    def delete(path, options)
+      @router.add_route("DELETE", path, options[:to])
     end
   end
 end
