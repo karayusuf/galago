@@ -34,7 +34,7 @@ module Galago
 
       def convert_path_to_regex(path)
         regexp = path.to_s.gsub(/\:\w+/, '([\w-]+)')
-        Regexp.new("^#{regexp}$")
+        /\A#{regexp}$/
       end
 
       def identify_params_in_path(path)

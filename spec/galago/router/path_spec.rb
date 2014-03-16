@@ -18,6 +18,11 @@ module Galago
         path = Router::Path.new('/users/:id')
         expect(path).not_to be_recognizes '/users/:id'
       end
+
+      it "does not recognize paths with newlines" do
+        path = Router::Path.new('/users/:id')
+        expect(path).not_to be_recognizes "\n/users/1"
+      end
     end
 
     describe "#to_s" do
