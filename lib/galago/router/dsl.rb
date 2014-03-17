@@ -3,27 +3,48 @@ module Galago
     class DSL
       def initialize(router, block)
         @router = router
+        @namespace = ''
         instance_eval(&block)
       end
 
+      def namespace(new_namespace)
+        @namespace << "/#{new_namespace}"
+        yield
+        @namespace = ''
+      end
+
       def get(path, options)
-        @router.add_route("GET", path, options[:to])
+        add_route("GET", path, options[:to])
       end
 
       def patch(path, options)
-        @router.add_route("PATCH", path, options[:to])
+        add_route("PATCH", path, options[:to])
       end
 
       def post(path, options)
-        @router.add_route("POST", path, options[:to])
+        add_route("POST", path, options[:to])
       end
 
       def put(path, options)
-        @router.add_route("PUT", path, options[:to])
+        add_route("PUT", path, options[:to])
       end
 
       def delete(path, options)
-        @router.add_route("DELETE", path, options[:to])
+        add_route("DELETE", path, options[:to])
+      end
+
+      private
+
+      def add_route(method, path, application)
+        path_with_namespace = add_namespace_to_path(path)
+        @router.add_route(method, path_with_namespace, application)
+      end
+
+      def add_namespace_to_path(path)
+        path = "#{@namespace}/#{path}"
+        path = path.gsub('//', '/')
+        path = path.gsub(/\/$/, '')
+        path
       end
     end
   end

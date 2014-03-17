@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module Galago
   describe Router do
-    describe '.routes' do
+    describe 'routes' do
       it 'adds the specified routes' do
         router = Router.new do
           get    '/foo' , to: lambda { |env| 'bar' }
@@ -17,6 +17,50 @@ module Galago
         expect(router).to have_route(:patch, '/foo')
         expect(router).to have_route(:put, '/foo')
         expect(router).to have_route(:delete, '/foo')
+      end
+
+      it 'adds the namespace to the route' do
+        router = Router.new do
+          namespace :foo do
+            get  '/', to: ->(env) { [200, {}, ['foo']] }
+            post '/', to: ->(env) { [200, {}, ['post foo']] }
+
+            get    '/:foo', to: ->(env) { [200, {}, ['get :foo']] }
+            patch  '/:foo', to: ->(env) { [200, {}, ['patch :foo']] }
+            put    '/:foo', to: ->(env) { [200, {}, ['put :foo']] }
+            delete '/:foo', to: ->(env) { [200, {}, ['delete :foo']] }
+          end
+        end
+
+        expect(router).to have_route(:get, '/foo')
+        expect(router).to have_route(:post, '/foo')
+
+        expect(router).to have_route(:get, '/foo/1')
+        expect(router).to have_route(:patch, '/foo/2')
+        expect(router).to have_route(:put, '/foo/3')
+        expect(router).to have_route(:delete, '/foo/4')
+      end
+
+      it 'can have multiple namespaces' do
+        router = Router.new do
+          namespace :foo do
+            get '/', to: ->(env) { [200, {}, ['foo']] }
+
+            namespace :bar do
+              get '/',    to: ->(env) { [200, {}, ['foo bar']] }
+              get ':bar', to: ->(env) { [200, {}, ['foo bar']] }
+            end
+          end
+
+          namespace :hello do
+            get '/', to: ->(env) { [200, {}, ['hello']] }
+          end
+        end
+
+        expect(router).to have_route(:get, '/foo')
+        expect(router).to have_route(:get, '/foo/bar')
+        expect(router).to have_route(:get, '/foo/bar/1')
+        expect(router).to have_route(:get, '/hello')
       end
     end
 
