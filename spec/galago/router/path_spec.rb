@@ -3,6 +3,23 @@ require 'spec_helper'
 module Galago
   describe Router::Path do
 
+    describe ".join" do
+      it "joins the provided segments with a '/'" do
+        path = Router::Path.join('foo', 'bar')
+        expect(path).to eql '/foo/bar'
+      end
+
+      it "removes repeated '/'" do
+        path = Router::Path.join('//foo', '///bar', '/baz')
+        expect(path).to eql '/foo/bar/baz'
+      end
+
+      it "removes trailing '/'" do
+        path = Router::Path.join('foo', 'bar/')
+        expect(path).to eql '/foo/bar'
+      end
+    end
+
     describe "#recognizes?" do
       it "recognizes exact matches" do
         path = Router::Path.new('/users')

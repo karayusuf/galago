@@ -2,6 +2,16 @@ module Galago
   class Router
     class Path
 
+      REPEATED_SLASH = /\/{1,}/
+      TRAILING_SLASH = /\/$/
+
+      def self.join(*paths)
+        path = "/#{paths.join('/')}"
+        path = path.gsub(REPEATED_SLASH, '/')
+        path = path.gsub(TRAILING_SLASH, '')
+        path
+      end
+
       def initialize(path)
         @path = path.to_s
       end

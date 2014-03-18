@@ -36,16 +36,10 @@ module Galago
       private
 
       def add_route(method, path, application)
-        path_with_namespace = add_namespace_to_path(path)
+        path_with_namespace = Path.join(@namespace, path)
         @router.add_route(method, path_with_namespace, application)
       end
 
-      def add_namespace_to_path(path)
-        path = "#{@namespace}/#{path}"
-        path = path.gsub('//', '/')
-        path = path.gsub(/\/$/, '')
-        path
-      end
     end
   end
 end
