@@ -1,6 +1,6 @@
 # Galago Router
 
-A rack router.
+Simple, efficient routing for rack applications.
 
 ## Installation
 
@@ -39,6 +39,27 @@ end
 
 run router
 ```
+
+## Environment
+
+The router adds information about the route that was called to the environment.
+Each of the following examples uses the config.ru below and assumes a request has been made to `/users/42`.
+
+- `env['galago_router.path'] # => '/users/:id'`
+- `env['galago_router.params'] # => { id: '42' }`
+
+```ruby
+# config.ru
+require 'galago/router'
+require 'rack/lobster'
+
+router = Galago::Router.new do
+  get '/users/:id', to: Rack::Lobster.new
+end
+
+run router
+```
+
 
 ## Contributing
 
