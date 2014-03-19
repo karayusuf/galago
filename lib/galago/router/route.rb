@@ -18,6 +18,7 @@ module Galago
       end
 
       def call(env)
+        env['galago_router.path'] = @path.to_s
         @path.add_path_params_to_env(env)
         action.call(env)
       end

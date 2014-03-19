@@ -18,6 +18,13 @@ module Galago
         route.call(env)
       end
 
+      it "adds the path to the env" do
+        route = Router::Route.new('GET', '/foo/:id', action)
+        route.call(env)
+
+        expect(env['galago_router.path']).to eql '/foo/:id'
+      end
+
       it "calls the route's action" do
         route = Router::Route.new('GET', '/bar', action)
         expect(action).to receive(:call).with(env)
