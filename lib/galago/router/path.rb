@@ -24,11 +24,14 @@ module Galago
         @path_parameters ||= @path.scan(/\:(\w+)/).flatten
       end
 
-      def add_path_params_to_env(env)
+      def params_from(env)
         request = Rack::Request.new(env)
+        params = request.params
 
         if path_params = identify_params_in_path(request.path)
-          path_params.each { |key, value| request.update_param(key, value) }
+          params.merge(path_params)
+        else
+          params
         end
       end
 
@@ -49,7 +52,7 @@ module Galago
 
       def identify_params_in_path(path)
         if match = regex.match(path)
-          named_parameters.zip(match.captures)
+          Hash[named_parameters.zip(match.captures)]
         end
       end
 

@@ -1,21 +1,27 @@
 require 'spec_helper'
+require 'pry'
 
 module Galago
   describe Router::Route do
     context "#call" do
       let(:env) do
-        { 'PATH_INFO' => '/foo' }
+        { 'PATH_INFO' => '/foo', 'rack.input' => '' }
       end
 
       let(:action) do
         lambda { |env| "foo" }
       end
 
-      it "adds the path's params to the env" do
-        route = Router::Route.new('GET', '/foo', action)
-        expect(route.path).to receive(:add_path_params_to_env).with(env)
+      it "adds the named params to the env" do
+        env['PATH_INFO'] = '/users/bob'
 
+
+        route = Router::Route.new('GET', '/users/:name', action)
         route.call(env)
+
+        expect(env['galago_router.params']).to eql({
+          'name' => 'bob'
+        })
       end
 
       it "adds the path to the env" do

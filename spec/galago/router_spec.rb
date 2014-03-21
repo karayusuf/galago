@@ -109,10 +109,12 @@ module Galago
 
     describe "#call" do
       it "calls the rack app when the route is found" do
-        router = Router.new
-        router.add_route(:get, '/foo', lambda { |env| [200, {}, 'bar'] })
+        router = Router.new do
+          get '/foo', to: lambda { |env| [200, {}, 'bar'] }
+        end
 
         response = router.call({
+          'rack.input' => '',
           'REQUEST_METHOD' => 'GET',
           'PATH_INFO' => '/foo'
         })
@@ -124,6 +126,7 @@ module Galago
         router = Router.new
 
         response = router.call({
+          'rack.input' => '',
           'REQUEST_METHOD' => 'GET',
           'PATH_INFO' => '/bar'
         })

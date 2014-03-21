@@ -61,19 +61,18 @@ module Galago
       end
     end
 
-    describe "#add_path_params_to_env" do
+    describe "#params_from" do
       let(:env) do
-        { 'rack.input' => anything }
+        { 'rack.input' => '' }
       end
 
       it "adds the params" do
         env['PATH_INFO'] = '/users/21/posts/42'
 
         path = Router::Path.new('/users/:user_id/posts/:id')
-        path.add_path_params_to_env(env)
+        params = path.params_from(env)
 
-        request = Rack::Request.new(env)
-        expect(request.params).to eql({
+        expect(params).to eql({
           'user_id' => '21',
           'id'      => '42'
         })
@@ -83,10 +82,9 @@ module Galago
         env['PATH_INFO'] = '/users'
 
         path = Router::Path.new('/users')
-        path.add_path_params_to_env(env)
+        params = path.params_from(env)
 
-        request = Rack::Request.new(env)
-        expect(request.params).to be_empty
+        expect(params).to be_empty
       end
     end
 
