@@ -43,26 +43,13 @@ run router
 ## Environment
 
 The router adds information about the route that was called to the environment.
+All requests will have the following keys added:
 
-1. Given the following router:
+| Key                  | Example Value |
+| :------------------- | :------------ |
+| galago_router.path   | '/users/:id'  |
+| galago_router.params | { id: 42 }    |
 
-```ruby
-# config.ru
-require 'galago/router'
-require 'rack/lobster'
-
-router = Galago::Router.new do
-  get '/users/:id', to: Rack::Lobster.new
-end
-
-run router
-```
-
-2. When I send a GET request to '/users/42'
-
-3. Then the `env` contains the following values:
-   - env['galago_router.path'] `# => '/users/:id'`
-   - env['galago_router.params'] `# => { id: '42' }`
 
 ## Contributing
 
