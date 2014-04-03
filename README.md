@@ -51,6 +51,16 @@ All requests will have the following keys added:
 | galago_router.params | { id: 42 }    |
 
 
+## Responses
+
+### 405 Method Not Allowed
+
+In the event a path is requested with an unsupported method, the router will return a method not allowed response.
+This consists of a 405 status code and an 'Allow' header listing the valid request methods. 
+
+More information: http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+
+
 ## Contributing
 
 1. Fork it
