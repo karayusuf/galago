@@ -2,15 +2,19 @@ module Galago
   class Router
     class Route
 
-      attr_reader :request_method, :path, :action
+      attr_reader :path
 
-      def initialize(request_method, path, action)
-        @request_method = request_method.to_s.upcase
+      def initialize(path)
         @path = Router::Path.new(path)
-        @action = action
+        @endpoints = {}
+      end
 
-        validate_action!
-        validate_request_method!
+      def add_endpoint(request_method, endpoint)
+        @endpoints[request_method] = endpoint
+      end
+
+      def allowed_methods
+        @endpoints.keys.sort
       end
 
       def recognizes_path?(request_path)
@@ -21,20 +25,16 @@ module Galago
         env['galago_router.path'] = @path.to_s
         env['galago_router.params'] = @path.params_from(env)
 
-        action.call(env)
+        endpoint = @endpoints.fetch(env['REQUEST_METHOD'], method_not_allowed)
+        endpoint.call(env)
       end
 
       private
 
-      def validate_action!
-        action.respond_to?(:call) or raise Router::ActionInvalid.new(action)
+      def method_not_allowed
+        lambda { |env| [405, { 'Allow' => allowed_methods.join(', ') }, []] }
       end
 
-      def validate_request_method!
-        unless Router::REQUEST_METHODS.include?(request_method)
-          raise Router::RequestMethodInvalid.new(request_method)
-        end
-      end
     end
   end
 end
