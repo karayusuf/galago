@@ -6,7 +6,7 @@ module Galago
 
       def initialize(path)
         @path = Router::Path.new(path)
-        @endpoints = {}
+        @endpoints = { 'OPTIONS' => options }
       end
 
       def add_endpoint(request_method, endpoint)
@@ -32,7 +32,11 @@ module Galago
       private
 
       def method_not_allowed
-        lambda { |env| [405, { 'Allow' => allowed_methods.join(', ') }, []] }
+        ->(env) { [405, { 'Allow' => allowed_methods.join(', ') }, []] }
+      end
+
+      def options
+        ->(env) { [200, { 'Allow' => allowed_methods.join(', ') }, []] }
       end
 
     end
