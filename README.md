@@ -44,9 +44,13 @@ run router
 
 ### OPTIONS
 
-OPTIONS endpoints will be automatically defined for each resource provided. The
+OPTIONS endpoints are automatically defined for each resource provided. The
 response will contain an ALLOW header listing the request methods the resource
 supports.
+
+### HEAD
+
+HEAD endpoints are automatically defined for each resource that supports GET.
 
 
 ## Environment
