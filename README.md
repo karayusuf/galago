@@ -40,6 +40,15 @@ end
 run router
 ```
 
+## Routes
+
+### OPTIONS
+
+OPTIONS endpoints will be automatically defined for each resource provided. The
+response will contain an ALLOW header listing the request methods the resource
+supports.
+
+
 ## Environment
 
 The router adds information about the route that was called to the environment.
