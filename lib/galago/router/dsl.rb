@@ -15,6 +15,7 @@ module Galago
 
       def get(path, options)
         add_route("GET", path, options[:to])
+        add_route("HEAD", path, Rack::Head.new(options[:to]))
       end
 
       def patch(path, options)

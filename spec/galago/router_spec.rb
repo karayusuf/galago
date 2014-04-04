@@ -147,7 +147,7 @@ module Galago
           post '/foo'
 
           allow = last_response.headers.fetch('Allow')
-          expect(allow).to eql 'GET, OPTIONS'
+          expect(allow).to eql 'GET, HEAD, OPTIONS'
         end
       end
     end

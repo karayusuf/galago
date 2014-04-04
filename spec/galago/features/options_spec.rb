@@ -20,7 +20,7 @@ module Galago
           options '/users'
 
           allow_header = last_response.headers['Allow']
-          expect(allow_header).to eql 'GET, OPTIONS, POST'
+          expect(allow_header).to eql 'GET, HEAD, OPTIONS, POST'
         end
       end
 
