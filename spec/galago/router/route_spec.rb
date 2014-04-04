@@ -66,7 +66,7 @@ module Galago
           response = route.call(env)
 
           headers = response[1]
-          expect(headers['Allow']).to eql 'GET, PUT'
+          expect(headers['Allow']).to eql 'GET, OPTIONS, PUT'
         end
       end
     end
@@ -74,15 +74,15 @@ module Galago
     context "allowed_methods" do
       let(:route) { Router::Route.new('/users/:id/posts') }
 
-      it "is empty by default" do
-        expect(route).to have(0).allowed_methods
+      it "allows OPTIONS by default" do
+        expect(route.allowed_methods).to eql ['OPTIONS']
       end
 
       it "has an allowed method for each endpoint" do
         route.add_endpoint('POST', anything)
         route.add_endpoint('PUT', anything)
 
-        expect(route.allowed_methods).to eql ['POST', 'PUT']
+        expect(route.allowed_methods).to eql ['OPTIONS', 'POST', 'PUT']
       end
 
       it "lists the allowed methods in alphabetical order" do
@@ -90,7 +90,8 @@ module Galago
         route.add_endpoint('DELETE', anything)
         route.add_endpoint('GET', anything)
 
-        expect(route.allowed_methods).to eql ['DELETE', 'GET', 'POST']
+        allowed_methods = route.allowed_methods
+        expect(allowed_methods).to eql ['DELETE', 'GET', 'OPTIONS', 'POST']
       end
     end
 
