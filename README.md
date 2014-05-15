@@ -1,6 +1,6 @@
 # Galago Router
 
-Simple, efficient routing for rack applications.
+Simple, efficient router for rack applications.
 
 ## Installation
 
