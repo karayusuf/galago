@@ -7,13 +7,16 @@ require 'galago/router/version'
 module Galago
   class Router
 
-    REQUEST_METHODS = [
-      "GET",
-      "PATCH",
-      "POST",
-      "PUT",
-      "DELETE"
-    ]
+    GET    = 'GET'.freeze
+    PATCH  = 'PATCH'.freeze
+    POST   = 'POST'.freeze
+    PUT    = 'PUT'.freeze
+    DELETE = 'DELETE'.freeze
+
+    REQUEST_METHODS = [GET, PATCH, POST, PUT, DELETE].freeze
+
+    PATH_INFO = 'PATH_INFO'.freeze
+    NOT_FOUND = 'Not Found'.freeze
 
     attr_reader :routes
 
@@ -38,10 +41,10 @@ module Galago
     end
 
     def call(env)
-      if route = find_route(env['PATH_INFO'])
+      if route = find_route(env[PATH_INFO])
         route.call(env)
       else
-        Rack::Response.new("Not Found", 404).finish
+        Rack::Response.new(NOT_FOUND, 404).finish
       end
     end
 
