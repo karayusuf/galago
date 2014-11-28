@@ -110,7 +110,7 @@ module Galago
     context "#named_parameters" do
       it "has none when no segments start with a ':'" do
         path = Router::Path.new('/users')
-        expect(path).to have(0).named_parameters
+        expect(path.named_parameters).to be_empty
       end
 
       it "returns segments starting with a ':'" do
